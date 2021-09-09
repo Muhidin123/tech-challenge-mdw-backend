@@ -3,7 +3,9 @@ const admin = require("firebase-admin");
 
 admin.initializeApp();
 
-exports.getPages = functions.https.onRequest((_req, res) => {
+const app = require("express")();
+
+app.get("/pages", (_req, res) => {
   admin
     .firestore()
     .collection("data")
@@ -18,7 +20,7 @@ exports.getPages = functions.https.onRequest((_req, res) => {
     .catch(err => console.error(err));
 });
 
-exports.addContact = functions.https.onRequest((req, res) => {
+app.post("/contacts", (req, res) => {
   const newContact = {
     first_name: req.body.first_name,
     last_name: req.body.last_name,
@@ -39,7 +41,7 @@ exports.addContact = functions.https.onRequest((req, res) => {
     });
 });
 
-exports.getAllContacts = functions.https.onRequest((_req, res) => {
+app.get("/contacts", (_req, res) => {
   admin
     .firestore()
     .collection("contacts")
@@ -53,3 +55,5 @@ exports.getAllContacts = functions.https.onRequest((_req, res) => {
     })
     .catch(err => console.error(err));
 });
+
+exports.api = functions.https.onRequest(app);
