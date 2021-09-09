@@ -3,17 +3,20 @@ const admin = require("firebase-admin");
 
 admin.initializeApp();
 
+const db = admin.firestore();
+
 const app = require("express")();
 
 app.get("/pages", (_req, res) => {
-  admin
-    .firestore()
-    .collection("data")
+  db.collection("data")
     .get()
     .then(data => {
       let pages = [];
       data.forEach(doc => {
-        pages.push(doc.data());
+        pages.push({
+          id: doc.id,
+          ...doc.data(),
+        });
       });
       return res.json(pages);
     })
@@ -21,16 +24,16 @@ app.get("/pages", (_req, res) => {
 });
 
 app.post("/contacts", (req, res) => {
+  let contact = req.body;
+
   const newContact = {
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    email: req.body.email,
-    title: req.body.email,
-    message: req.body.message,
+    first_name: contact.first_name,
+    last_name: contact.last_name,
+    email: contact.email,
+    title: contact.email,
+    message: contact.message,
   };
-  admin
-    .firestore()
-    .collection("contacts")
+  db.collection("contacts")
     .add(newContact)
     .then(doc => {
       res.json({ message: `document ${doc.id} created successfully` });
@@ -42,9 +45,7 @@ app.post("/contacts", (req, res) => {
 });
 
 app.get("/contacts", (_req, res) => {
-  admin
-    .firestore()
-    .collection("contacts")
+  db.collection("contacts")
     .get()
     .then(data => {
       let contacts = [];
