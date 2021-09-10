@@ -1,7 +1,7 @@
 const validateEmail = email => {
   let emailRegex =
     /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info)\b/;
-  emailRegex.test(email);
+  return emailRegex.test(email);
 };
 
 const isEmpty = string => {

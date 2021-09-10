@@ -2,16 +2,14 @@ const { db } = require("../util/admin");
 const { validateEmail } = require("../util/validators");
 
 exports.saveNewContact = (req, res) => {
-  let contact = req.body;
-
   const newContact = {
-    first_name: contact.first_name,
-    last_name: contact.last_name,
-    email: contact.email,
-    title: contact.title,
-    message: contact.message,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    email: req.body.email,
+    title: req.body.title,
+    message: req.body.message,
   };
-  let emailValidation = validateEmail(contact.email);
+  let emailValidation = validateEmail(newContact.email);
 
   if (emailValidation === true) {
     db.collection("contacts")
