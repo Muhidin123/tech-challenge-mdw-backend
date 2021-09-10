@@ -5,16 +5,16 @@ const validateEmail = email => {
 };
 
 const isEmpty = string => {
-  if (string.trim() === "") return true;
+  if (string.trim() == "") return true;
   else return false;
 };
 
-exports.validateEmail = email => {
+exports.emailValidation = email => {
   let errors = {};
   if (isEmpty(email)) {
-    errors.email = "Must not be empty";
+    errors.email = "Email Must not be empty";
   } else if (!validateEmail(email)) {
-    errors.email = "Invalid email";
+    errors.email = "Invalid email please try again";
   }
-  return Object.keys(email).length != 0 ? errors : true;
+  return errors["email"] !== undefined ? errors : true;
 };

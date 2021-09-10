@@ -1,5 +1,5 @@
 const { db } = require("../util/admin");
-const { validateEmail } = require("../util/validators");
+const { emailValidation } = require("../util/validators");
 
 exports.saveNewContact = (req, res) => {
   const newContact = {
@@ -9,9 +9,8 @@ exports.saveNewContact = (req, res) => {
     title: req.body.title,
     message: req.body.message,
   };
-  let emailValidation = validateEmail(newContact.email);
 
-  if (emailValidation === true) {
+  if (emailValidation(newContact.email) === true) {
     db.collection("contacts")
       .add(newContact)
       .then(doc => {
@@ -21,7 +20,9 @@ exports.saveNewContact = (req, res) => {
         res.status(500).json({ error: "something went wrong" });
       });
   } else {
-    res.status(400).json({ error: { message: emailValidation } });
+    res
+      .status(400)
+      .json({ error: { message: emailValidation(newContact.email) } });
   }
 };
 
