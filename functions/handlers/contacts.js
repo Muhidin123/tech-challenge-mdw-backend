@@ -39,19 +39,3 @@ exports.getAllContacts = (_req, res) => {
     })
     .catch(err => console.error(err));
 };
-
-// Attach an asynchronous callback to read the data at our posts reference
-
-exports.getPageContact = (_req, res) => {
-  db.collection("pages")
-    .where("id", "==", "2L97a6qiTvlHw6Udyi4X")
-    .get()
-    .then(data => {
-      let contactPage = [];
-      data.forEach(doc => {
-        contactPage.push(doc.data());
-      });
-      return res.json(contactPage);
-    })
-    .catch(err => console.error(err));
-};

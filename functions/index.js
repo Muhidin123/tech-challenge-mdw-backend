@@ -6,6 +6,7 @@ const {
   getPageContact,
 } = require("./handlers/contacts");
 const { getAllPages } = require("./handlers/pages");
+const { db } = require("./util/admin");
 app.use((_req, res, next) => {
   // it will accept all requests but we can change this to accept only the ones we want
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -26,5 +27,5 @@ app.get("/pages", getAllPages);
 // contacts post and get routes
 app.post("/contacts", saveNewContact);
 app.get("/contacts", getAllContacts);
-app.get("/pages/contacts", getPageContact);
+
 exports.api = functions.https.onRequest(app);
