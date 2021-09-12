@@ -1,12 +1,11 @@
 const functions = require("firebase-functions");
 const app = require("express")();
+const { saveNewContact, getAllContacts } = require("./handlers/contacts");
 const {
-  saveNewContact,
-  getAllContacts,
-  getPageContact,
-} = require("./handlers/contacts");
-const { getAllPages } = require("./handlers/pages");
-const { db } = require("./util/admin");
+  getAllPages,
+  getContactPage,
+  getHomePage,
+} = require("./handlers/pages");
 app.use((_req, res, next) => {
   // it will accept all requests but we can change this to accept only the ones we want
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -23,9 +22,9 @@ app.use((_req, res, next) => {
 
 // pages route
 app.get("/pages", getAllPages);
+app.get("/pages/contact", getContactPage);
+app.get("/pages/home", getHomePage);
 
-// contacts post and get routes
-app.post("/contacts", saveNewContact);
-app.get("/contacts", getAllContacts);
+app.route("/contacts").get(getAllContacts).post(saveNewContact);
 
 exports.api = functions.https.onRequest(app);
